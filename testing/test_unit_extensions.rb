@@ -1,4 +1,7 @@
-class Test::Unit::TestCase
+module Test::Unit
+  AssertionFailedError = Class.new(StandardError)
+  
+class TestCase
  
  def self.must(name, &block)
    test_name = "test_#{name.gsub(/\s+/,'_')}".to_sym
@@ -21,4 +24,6 @@ class Test::Unit::TestCase
    define_method :teardown, &block
  end
  
+end
+
 end
