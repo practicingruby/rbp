@@ -20,10 +20,10 @@ class BlankSlate
     # Hide the method named +name+ in the BlankSlate class.  Don't
     # hide +instance_eval+ or any method beginning with "__".
     def hide(name)
-      if instance_methods.include?(name.to_s) and
+      if instance_methods.include?(name) and
         name !~ /^(__|instance_eval)/
         @hidden_methods ||= {}
-        @hidden_methods[name.to_sym] = instance_method(name)
+        @hidden_methods[name] = instance_method(name)
         undef_method name
       end
     end
@@ -36,13 +36,9 @@ class BlankSlate
     # Redefine a previously hidden method so that it may be called on a blank
     # slate object.
     def reveal(name)
-      bound_method = nil
       unbound_method = find_hidden_method(name)
       fail "Don't know how to reveal method '#{name}'" unless unbound_method
-      define_method(name) do |*args|
-        bound_method ||= unbound_method.bind(self)
-        bound_method.call(*args)
-      end
+      define_method(name, unbound_method)
     end
   end
   
