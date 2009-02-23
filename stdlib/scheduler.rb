@@ -26,8 +26,8 @@ class Scheduler
   end
 
   def events_at(datetime)
-    @events.inject([]) do |matched,(range,message)|
-      range.cover?(datetime) ? matched + [[range, message]] : matched
+    @events.each_with_object([]) do |event, matched|
+      matched << event if event.first.cover?(datetime)
     end
   end
 
