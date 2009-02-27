@@ -7,7 +7,7 @@ require "csv"
 
 Benchmark.bmbm do |x|
   
-  x.report("inject-based to_html") do
+  x.report("inject based to_html") do
     csv_data = CSV.read("report_data.csv")
     r1 = ReportUnoptimized.new(csv_data)
     r1.to_html

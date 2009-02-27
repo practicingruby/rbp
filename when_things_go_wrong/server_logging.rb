@@ -24,8 +24,12 @@ class Server
 
   def handle_request(session)
     action, *args = session.gets.split(/\s/)
-    @logger.info "executing: '#{action}' with #{args.inspect}"
-    session.puts(send(action, *args))
+    if ["*", "/"].include?(action)
+      @logger.info "executing: '#{action}' with #{args.inspect}"
+      session.puts(send(action, *args))
+    else
+      session.puts("Invalid command")
+    end
   rescue StandardError => e
     @logger.error(e.report)
     session.puts "Sorry, something went wrong."
